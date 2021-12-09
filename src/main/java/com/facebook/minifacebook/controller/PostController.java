@@ -72,6 +72,12 @@ public class PostController {
     public String CommentPost(HttpServletRequest request, @PathVariable String postId, @RequestParam("commentText") String commentTxt){
 
         HttpSession session = request.getSession(false);
+
+        if(commentTxt.length() == 0){
+
+            return "redirect:/";
+        }
+
         session.setAttribute("postId", Long.parseLong(postId));
 
         Long userId = (Long) session.getAttribute("userId");

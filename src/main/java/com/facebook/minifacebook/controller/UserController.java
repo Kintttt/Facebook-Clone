@@ -5,6 +5,7 @@ import com.facebook.minifacebook.POJO.Login;
 import com.facebook.minifacebook.model.PostModel;
 import com.facebook.minifacebook.model.User;
 import com.facebook.minifacebook.repository.UserRepository;
+import com.facebook.minifacebook.services.CommentServices;
 import com.facebook.minifacebook.services.PostServices;
 import com.facebook.minifacebook.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,33 +24,38 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-    @Autowired
-    UserRepository userRepo;
+
+    private final UserRepository userRepo;
+
+    private final CommentServices commentServices;
+
+    private final UserServices userServices;
+
+    private final PostServices postServices;
 
     @Autowired
-    UserServices userServices;
-
-    @Autowired
-    PostServices postServices;
-
-
-
-//    @GetMapping(path = "")
-//    public String viewLandingPage(@ModelAttribute User user){
-//        return "index";
-//    }
+    public UserController(UserRepository userRepo, CommentServices commentServices, UserServices userServices, PostServices postServices) {
+        this.userRepo = userRepo;
+        this.commentServices = commentServices;
+        this.userServices = userServices;
+        this.postServices = postServices;
+    }
 
     @GetMapping(path = "/")
     public String signUp(Model model, HttpServletRequest request){
 
         HttpSession session = request.getSession(false);
+        model.addAttribute("allPost", postServices.getAllPosts());
+        model.addAttribute("comment", commentServices);
 
         if(session != null){
             model.addAttribute("allPost", postServices.getAllPosts());
+            model.addAttribute("commentService", commentServices);
+
             return "homePage";
         }
 
-
+        model.addAttribute("commentService", commentServices);
         model.addAttribute("user", new User());
 
         return "index";
@@ -87,6 +94,7 @@ public class UserController {
             model.addAttribute("firstName", userServices.getUserDetailsByEmail(login.getEmail()).getFirstName());
             model.addAttribute("lastName", userServices.getUserDetailsByEmail(login.getEmail()).getLastName());
             model.addAttribute("allPost", postServices.getAllPosts());
+            model.addAttribute("commentService", commentServices);
             System.out.println("got here 1");
 
 

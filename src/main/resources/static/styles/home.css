@@ -306,7 +306,11 @@ body {
 .post__option p {
     margin-left: 10px;
 }
+.post__option p a {
+    text-decoration: none;
+    color: gray;
 
+}
 .post__option:hover {
     background-color: #eff2f5;
     border-radius: 10px;
