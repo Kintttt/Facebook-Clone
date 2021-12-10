@@ -46,11 +46,25 @@ public class UserController {
 
         HttpSession session = request.getSession(false);
         model.addAttribute("allPost", postServices.getAllPosts());
-        model.addAttribute("comment", commentServices);
+
 
         if(session != null){
+            session.setAttribute("commentServices", commentServices);
+
+            Long userId = (Long) session.getAttribute("userId");
+            String firstName = (String) session.getAttribute("firstName");
+            String lastName = (String) session.getAttribute("lastName");
+            String fullName = (String) session.getAttribute("fullName");
+
+
+            model.addAttribute("firstName", firstName);
+            model.addAttribute("lastName", lastName);
+            model.addAttribute("fullName", fullName);
+            model.addAttribute("postServices", postServices);
+
             model.addAttribute("allPost", postServices.getAllPosts());
             model.addAttribute("commentService", commentServices);
+
 
             return "homePage";
         }
@@ -82,7 +96,6 @@ public class UserController {
 
         HttpSession httpSession = request.getSession();
 
-
         boolean result = userServices.validateUser(login.getEmail(), login.getPassword());
 
         if(result){
@@ -90,18 +103,22 @@ public class UserController {
             httpSession.setAttribute("firstName", userServices.getUserDetailsByEmail(login.getEmail()).getFirstName());
             httpSession.setAttribute("lastName", userServices.getUserDetailsByEmail(login.getEmail()).getLastName());
             httpSession.setAttribute("fullName", userServices.getUserDetailsByEmail(login.getEmail()).getFirstName() + " " + userServices.getUserDetailsByEmail(login.getEmail()).getLastName());
+//            httpSession.setAttribute("postServices", postServices);
+
+
 
             model.addAttribute("firstName", userServices.getUserDetailsByEmail(login.getEmail()).getFirstName());
+            model.addAttribute("userId", userServices.getUserDetailsByEmail(login.getEmail()).getUserId());
             model.addAttribute("lastName", userServices.getUserDetailsByEmail(login.getEmail()).getLastName());
             model.addAttribute("allPost", postServices.getAllPosts());
             model.addAttribute("commentService", commentServices);
-            System.out.println("got here 1");
+//            model.addAttribute("postServices", postServices);
+//            System.out.println(postServices.getPostById(15L).getPostText());
 
 
             return "homePage";
         }else{
 
-            httpSession.setAttribute("mess", "Email or Password is wrong!!!");
             System.out.println("got here 2");
             return "index";
 

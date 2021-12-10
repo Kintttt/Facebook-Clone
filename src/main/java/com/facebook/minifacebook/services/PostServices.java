@@ -22,9 +22,8 @@ public class PostServices implements postInterface {
         this.postRepo = postRepo;
     }
 
-    public void createPost(Long userId, String postText, String posterName){
+    public void createPost(PostModel postModel){
 
-        PostModel postModel = new PostModel(postText, 0, 0, userId, posterName);
         postRepo.save(postModel);
     }
 
@@ -38,6 +37,11 @@ public class PostServices implements postInterface {
 
         PostModel model = postRepo.findById(postId).get();
         postRepo.delete(model);
+    }
+
+    public PostModel getPostById(Long postId){
+        PostModel model = postRepo.findById(postId).get();
+        return model;
     }
 
 }
