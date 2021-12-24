@@ -89,6 +89,7 @@ public class PostController {
         }
 
         session.setAttribute("postId", Long.parseLong(postId));
+        System.out.println(postId);
 
         Long userId = (Long) session.getAttribute("userId");
         String fullName = (String) session.getAttribute("fullName");
@@ -119,6 +120,9 @@ public class PostController {
             postServices.createPost(postsId);
 
 //            model.addAttribute("allPost", postServices.getAllPosts());
+
+            System.out.println(postEditor);
+            System.out.println(posterId);
 
             return "redirect:/";
 

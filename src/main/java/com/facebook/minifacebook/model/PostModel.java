@@ -40,4 +40,5 @@ public class PostModel {
         this.posterId = posterId;
         this.posterName = posterName;
     }
+
 }

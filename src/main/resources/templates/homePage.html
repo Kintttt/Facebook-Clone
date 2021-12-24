@@ -397,11 +397,12 @@
     <!-- post starts -->
     <div class="post" th:each="pest : ${allPost}">
 <!--      beginning of one post-->
-      <div class="wrapper hide" id="edit-modal">
-        <div class="overlay" onclick="toggleModal('edit-modal')"></div>
+
+      <div class="wrapper hide" th:id="${'edit-modal-'+ pest.getPost_id()}">
+        <div class="overlay" th:attr="onclick=|toggleModal('edit-modal-${pest.getPost_id()}')|"></div>
         <div class="comment_modal edit">
-          <form th:action="${'/edit/' + pest.getPost_id()}" method="post">
-            <textarea rows="3" placeholder="Start typing..."  name="postEditor"></textarea>
+          <form action="" th:action="@{'/edit/' + ${pest.getPost_id()}}" method="post">
+            <textarea rows="3" placeholder="Start typing..."  name="postEditor" ></textarea>
 <!--            th:text="${postServices.getPostById(pest.getPost_id()).getPostText()}"-->
             <button type="submit"> Send </button>
           </form>
@@ -429,11 +430,11 @@
           <p>Like</p>
         </div>
 
-        <div class="post__option" onclick="toggleModal('modal')">
+        <div class="post__option" th:attr="onclick=|toggleModal('modal-${pest.getPost_id()}')|">
           <span class="material-icons"> chat_bubble_outline </span>
           <p>Comment</p>
         </div>
-        <div class="post__option" onclick="toggleModal('edit-modal')">
+        <div class="post__option" th:attr="onclick=|toggleModal('edit-modal-${pest.getPost_id()}')|">
           <span class="material-icons"> edit </span>
           <p>Edit</p>
         </div>
@@ -465,8 +466,8 @@
 <!--      </div>-->
 <!--      testing part end-->
       <!--      styling the modal-->
-      <div class="wrapper hide" id="modal" >
-        <div class="overlay" onclick="toggleModal('modal')"></div>
+      <div class="wrapper hide" th:id="${'modal-'+ pest.getPost_id()}" >
+        <div class="overlay" th:attr="onclick=|toggleModal('modal-${pest.getPost_id()}')|"></div>
         <div class="comment_modal">
           <form action="" method="post" th:action="@{'/comment/' + ${pest.getPost_id()}}">
             <textarea rows="3" placeholder="Start typing..." name="commentText"></textarea>
